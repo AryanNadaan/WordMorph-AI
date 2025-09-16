@@ -1,12 +1,17 @@
 import mongoose from "mongoose";
 
-const connectDB = async ()=>{
+const connectDB = async () => {
+    try {
+        mongoose.connection.on('connected', () => {
+            console.log("Database Connected")
+        })
 
-    mongoose.connection.on('connected', ()=>{
-        console.log("Database Connected")
-    })
-
-    await mongoose.connect(`${process.env.MONGODB_URI}/WordMorph`)
+        await mongoose.connect(`${process.env.MONGODB_URI}/WordMorph`)
+        
+    } catch (error) {
+        console.log("Database connection error:", error)
+        process.exit(1)
+    }
 }
 
 export default connectDB;
